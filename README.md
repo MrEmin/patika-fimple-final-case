@@ -3,14 +3,15 @@
 
 Bu proje, kullanıcıların başvuru formunu doldurarak başvurularını takip edebildiği ve yetkili kullanıcıların bu başvuruları yönetebildiği bir başvuru/ticket yönetim sistemidir.
 
+Projeyi buradan inceleyebilirsiniz [link](https://patika-final-case.netlify.app/)
+
 ## Kullanılan Teknolojiler
 
 -   React Hooks
--   Router (react-router/ reach router / vs.)
+-   Router (react-router)
 -   Context API
--   Form Yönetim Kütüphanesi (react-hook-form (önerilen) / formik / vs.)
--   Validation Kütüphanesi (yup (önerilen), joi, vs.)
--   Uygulama bir servise (ör. Netlify, Vercel gibi) deploy edilecek ve README dosyasında halka açık bir link bulunmalıdır.
+-   Form Yönetim Kütüphanesi (react-hook-form)
+-   Validation Kütüphanesi (yup)
 -   Open source
 -   Eslint
 
