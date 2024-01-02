@@ -1,18 +1,18 @@
 import React, { useState } from "react";
-import { basvuruDurumunuSorgula } from "../services/firebase";
+import { queryApplicationStatus } from "../services/firebase";
 import { useNavigate } from "react-router-dom";
 import "../App.css";
 
 const BasvuruSorgula = () => {
-  const [basvuruKodu, setBasvuruKodu] = useState("");
+  const [applicationCode, setApplicationCode] = useState("");
   const navigate = useNavigate();
 
-  const handleSorgula = () => {
-    if (basvuruKodu) {
-      basvuruDurumunuSorgula(basvuruKodu, (basvuruData) => {
-        console.log(basvuruKodu);
-        if (basvuruData) {
-          navigate(`/basvuru/${basvuruKodu}`);
+  const handleQuery = () => {
+    if (applicationCode) {
+      queryApplicationStatus(applicationCode, (applicationData ) => {
+        console.log(applicationCode);
+        if (applicationData ) {
+          navigate(`/basvuru/${applicationCode}`);
         } else {
           console.log("Başvuru bulunamadı veya kod hatalı.");
         }
@@ -29,10 +29,10 @@ const BasvuruSorgula = () => {
         className="basvuru-sorgula-input"
         type="text"
         placeholder="Başvuru Kodu"
-        value={basvuruKodu}
-        onChange={(e) => setBasvuruKodu(e.target.value)}
+        value={applicationCode}
+        onChange={(e) => setApplicationCode(e.target.value)}
       />
-      <button className="basvuru-sorgula-button" onClick={handleSorgula}>
+      <button className="basvuru-sorgula-button" onClick={handleQuery}>
         Sorgula
       </button>
     </div>

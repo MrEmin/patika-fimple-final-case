@@ -1,19 +1,19 @@
 import React, { useState, useEffect } from "react";
 import { useAuth } from "../context/AuthContext";
-import { tumBasvurulariGetir } from "../services/firebase";
+import { getAllApplications } from "../services/firebase";
 import { useNavigate } from "react-router-dom"; 
 import '../App.css'
 
 const BasvuruListesi = () => {
-  const [basvurular, setBasvurular] = useState([]);
+  const [applications, setApplications] = useState([]);
   const { adminLogout } = useAuth();
   const navigate = useNavigate(); 
 
   useEffect(() => {
-    tumBasvurulariGetir((tumBasvurular) => {
-      if (tumBasvurular) {
-        console.log("Tüm Başvurular:", tumBasvurular);
-        setBasvurular(tumBasvurular);
+    getAllApplications((allApplications) => {
+      if (allApplications) {
+        console.log("Tüm Başvurular:", allApplications);
+        setApplications(allApplications);
       } else {
         console.log("Başvurular bulunamadı.");
       }
@@ -33,17 +33,17 @@ const BasvuruListesi = () => {
       </button>
 
       <ul className="basvuru-items">
-        {basvurular &&
-          Object.keys(basvurular).map((basvuruId) => (
-            <li className="basvuru-item" key={basvuruId}>
-              <h3>Başvuru ID: {basvuruId}</h3>
-              <p>Ad: {basvurular[basvuruId].ad}</p>
-              <p>Soyad: {basvurular[basvuruId].soyad}</p>
-              <p>Adres: {basvurular[basvuruId].adres}</p>
-              <p>Neden: {basvurular[basvuruId].neden}</p>
-              <p>TC: {basvurular[basvuruId].tc}</p>
-              <p>Yaş: {basvurular[basvuruId].yas}</p>
-              <button className="view-button" onClick={() => navigate(`/admin/basvuru/${basvuruId}`)}>
+        {applications &&
+          Object.keys(applications).map((applicationId) => (
+            <li className="basvuru-item" key={applicationId}>
+              <h3>Başvuru ID: {applicationId}</h3>
+              <p>Ad: {applications[applicationId].ad}</p>
+              <p>Soyad: {applications[applicationId].soyad}</p>
+              <p>Adres: {applications[applicationId].adres}</p>
+              <p>Neden: {applications[applicationId].neden}</p>
+              <p>TC: {applications[applicationId].tc}</p>
+              <p>Yaş: {applications[applicationId].yas}</p>
+              <button className="view-button" onClick={() => navigate(`/admin/basvuru/${applicationId}`)}>
                 Başvuruyu Görüntüle
               </button>
             </li>

@@ -8,7 +8,7 @@ import { getDatabase, ref, push, onValue, update } from "firebase/database";
 import firebase from "firebase/compat/app";
 import "firebase/compat/database";
 
-// Firebase yapılandırma
+// Firebase Configuration
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_API_KEY,
   authDomain: "fir-82f30.firebaseapp.com",
@@ -20,74 +20,74 @@ const firebaseConfig = {
 };
 const app = initializeApp(firebaseConfig);
 
-export function kaydetVeGoster(data) {
+export function saveAndDisplay(data) {
   return new Promise((resolve, reject) => {
     const db = getDatabase();
-    const yeniRef = push(ref(db, "basvurular"), data);
-    const yeniKod = yeniRef.key;
-    resolve(yeniKod);
+    const newRef = push(ref(db, "applications"), data);
+    const newKey = newRef.key;
+    resolve(newKey);
   });
 }
 
-// Başvuru durumunu sorgulama işlemi
-export function basvuruDurumunuSorgula(basvuruKodu, callback) {
+// Querying Application Status
+export function queryApplicationStatus(applicationCode, callback) {
   const db = getDatabase();
-  const basvuruRef = ref(db, `basvurular/${basvuruKodu}`);
+  const applicationRef  = ref(db, `applications/${applicationCode}`);
 
-  onValue(basvuruRef, (snapshot) => {
-    const basvuruData = snapshot.val();
-    console.log("Snapshot değeri:", basvuruData);
+  onValue(applicationRef , (snapshot) => {
+    const applicationData  = snapshot.val();
+    console.log("Snapshot değeri:", applicationData );
 
-    // Veri null değilse ya da snapshot boş değilse
-    if (basvuruData !== null && snapshot.exists()) {
-      console.log("Başvuru bulundu:", basvuruData);
-      callback(basvuruData);
+    // If data is not null or snapshot is not empty
+    if (applicationData  !== null && snapshot.exists()) {
+      console.log("Application found:", applicationData);
+      callback(applicationData);
     } else {
-      console.log("Başvuru bulunamadı.");
+      console.log("Application not found.");
       callback(null);
     }
   });
 }
 
-export function tumBasvurulariGetir(callback) {
+export function getAllApplications(callback) {
   const db = getDatabase();
-  const basvurularRef = ref(db, "basvurular");
+  const applicationsRef  = ref(db, "applications");
 
   onValue(
-    basvurularRef,
+    applicationsRef ,
     (snapshot) => {
-      const tumBasvurular = snapshot.val();
-      if (tumBasvurular) {
-        console.log("Tüm Başvurular:", tumBasvurular);
-        callback(tumBasvurular);
+      const allApplications = snapshot.val();
+      if (allApplications) {
+        console.log("All Applications:", allApplications);
+        callback(allApplications);
       } else {
-        console.log("Başvurular bulunamadı.");
+        console.log("Applications not found.");
         callback(null);
       }
     },
     (error) => {
-      console.error("Başvuruları alma sırasında bir hata oluştu:", error);
+      console.error("Error retrieving applications:", error);
       callback(null); 
     }
   );
 }
 
-export function getBasvuruById(basvuruNo) {
+export function getApplicationById(applicationId) {
   const db = getDatabase();
-  const basvuruRef = ref(db, `basvurular/${basvuruNo}`);
+  const applicationRef  = ref(db, `applications/${applicationId}`);
 
   return new Promise((resolve, reject) => {
     onValue(
-      basvuruRef,
+      applicationRef ,
       (snapshot) => {
-        const basvuruData = snapshot.val();
+        const applicationData  = snapshot.val();
 
-        if (snapshot.exists() && basvuruData !== null) {
-          resolve(basvuruData);
+        if (snapshot.exists() && applicationData  !== null) {
+          resolve(applicationData );
         } else {
           reject(
             new Error(
-              `Başvuru bulunamadı veya snapshot değeri null. Basvuru No: ${basvuruNo}`
+              `Application not found or snapshot value is null. Application ID: ${applicationId}`
             )
           );
         }
@@ -101,7 +101,7 @@ export function getBasvuruById(basvuruNo) {
 
 export function sendAnswer(applicationId, answer, userId, status) {
   const db = getDatabase();
-  const applicationRef = ref(db, `basvurular/${applicationId}`);
+  const applicationRef = ref(db, `applications/${applicationId}`);
 
   return update(applicationRef, {
     isAnswered: true,
@@ -109,10 +109,10 @@ export function sendAnswer(applicationId, answer, userId, status) {
     answeredAt: firebase.database.ServerValue.TIMESTAMP,
     status: status, 
   }).then(() => {
-    // Kullanıcının verilerine cevabı ekle
+    // Add the answer to user's data
     const userRef = ref(db, `users/${userId}`);
     return update(userRef, {
-      cevap: answer,
+      answer: answer,
     });
   });
 }

@@ -39,8 +39,8 @@ function App() {
               element={<Navigate to="/admin" />}
             />
           )}
-          <Route path="/admin/basvuru/:basvuruNo" element={<BasvuruDetay />} />
-          <Route path="/basvuru/:basvuruNo" element={<SorguDetay />} />
+          <Route path="/admin/basvuru/:applicationId" element={<BasvuruDetay />} />
+          <Route path="/basvuru/:applicationId" element={<SorguDetay />} />
         </Routes>
       </div>
     </Router>

@@ -1,24 +1,24 @@
 import React, { useState, useEffect } from "react";
-import { getBasvuruById } from "../services/firebase";
+import { getApplicationById } from "../services/firebase";
 import { useParams } from "react-router-dom";
 import "../App.css";
 
 const SorguDetay = () => {
-  const { basvuruNo } = useParams();
-  const [basvuru, setBasvuru] = useState(null);
+  const { applicationId } = useParams();
+  const [application, setApplication] = useState(null);
 
   useEffect(() => {
-    // basvuruNo'ya göre başvuru verilerini al
-    getBasvuruById(basvuruNo)
+    // applicationId'ye göre başvuru verilerini al
+    getApplicationById(applicationId)
       .then((data) => {
-        setBasvuru(data);
+        setApplication(data);
       })
       .catch((error) => {
         console.error(error);
       });
-  }, [basvuruNo]);
+  }, [applicationId]);
 
-  if (!basvuru) {
+  if (!application) {
     return <div>Yükleniyor...</div>;
   }
 
@@ -27,38 +27,38 @@ const SorguDetay = () => {
       <h2>Başvuru Detayı</h2>
       <div className="detail-item">
         <span className="detail-label">Ad:</span>
-        <span className="detail-value">{basvuru.ad}</span>
+        <span className="detail-value">{application.ad}</span>
       </div>
       <div className="detail-item">
         <span className="detail-label">Soyad:</span>
-        <span className="detail-value">{basvuru.soyad}</span>
+        <span className="detail-value">{application.soyad}</span>
       </div>
       <div className="detail-item">
         <span className="detail-label">Yaş:</span>
-        <span className="detail-value">{basvuru.yas}</span>
+        <span className="detail-value">{application.yas}</span>
       </div>
       <div className="detail-item">
         <span className="detail-label">TC:</span>
-        <span className="detail-value">{basvuru.tc}</span>
+        <span className="detail-value">{application.tc}</span>
       </div>
       <div className="detail-item">
         <span className="detail-label">Adres:</span>
-        <span className="detail-value">{basvuru.adres}</span>
+        <span className="detail-value">{application.adres}</span>
       </div>
       <div className="detail-item">
         <span className="detail-label">Neden:</span>
-        <span className="detail-value">{basvuru.neden}</span>
+        <span className="detail-value">{application.neden}</span>
       </div>
       <div className="detail-item">
         <span className="detail-label">Durum:</span>
         <span className="detail-value">
-          {basvuru.status ? basvuru.status : "Bekliyor"}
+          {application.status ? application.status : "Bekliyor"}
         </span>
       </div>
       <div className="detail-item">
         <span className="detail-label">Cevap:</span>
         <span className="detail-value">
-          {basvuru.answer ? basvuru.answer : "Çözülmedi"}
+          {application.answer ? application.answer : "Çözülmedi"}
         </span>
       </div>
     </div>

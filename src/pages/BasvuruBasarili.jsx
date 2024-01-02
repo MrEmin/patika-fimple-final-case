@@ -4,11 +4,11 @@ import "../App.css";
 
 const BasvuruBasarili = () => {
   const location = useLocation();
-  const [basvuruKodu, setBasvuruKodu] = useState("");
+  const [applicationCode, setApplicationCode] = useState("");
 
   useEffect(() => {
-    if (location.state && location.state.basvuruKodu) {
-      setBasvuruKodu(location.state.basvuruKodu);
+    if (location.state && location.state.applicationCode) {
+      setApplicationCode(location.state.applicationCode);
     }
   }, [location.state]);
 
@@ -17,7 +17,7 @@ const BasvuruBasarili = () => {
       <h2 className="success-message">
         Teşekkürler! Başvurunuz başarıyla alındı.
       </h2>
-      <p className="basvuru-info">Başvuru Kodunuz: {basvuruKodu}</p>
+      <p className="basvuru-info">Başvuru Kodunuz: {applicationCode}</p>
     </div>
   );
 };

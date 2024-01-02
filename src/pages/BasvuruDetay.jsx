@@ -1,28 +1,28 @@
 import React, { useState, useEffect } from "react";
-import { getBasvuruById, sendAnswer } from "../services/firebase";
+import { getApplicationById, sendAnswer } from "../services/firebase";
 import { useParams } from "react-router-dom";
 import "../App.css";
 
 const BasvuruDetay = () => {
-  const [basvuru, setBasvuru] = useState(null);
-  const [cevap, setCevap] = useState("");
-  const [durum, setDurum] = useState("Bekliyor");
-  const { basvuruNo } = useParams();
+  const [application, setApplication] = useState(null);
+  const [answer, setAnswer] = useState("");
+  const [status, setStatus] = useState("Bekliyor");
+  const { applicationId } = useParams();
 
   useEffect(() => {
-    getBasvuruById(basvuruNo)
+    getApplicationById(applicationId)
       .then((data) => {
-        setBasvuru(data);
+        setApplication(data);
       })
       .catch((error) => {
         console.error(error);
       });
-  }, [basvuruNo]);
+  }, [applicationId]);
 
   const handleSendAnswer = () => {
-    const userId = basvuruNo;
+    const userId = applicationId;
 
-    sendAnswer(basvuruNo, cevap, userId, durum)
+    sendAnswer(applicationId, answer, userId, status)
       .then(() => {
         console.log("Cevap gönderildi!");
       })
@@ -31,22 +31,21 @@ const BasvuruDetay = () => {
       });
   };
 
-  console.log("Başvuru Verisi:", basvuru);
 
   return (
     <div className="basvuru-detay">
       <h2>Başvuru Detayı</h2>
-      <p>Başvuru ID: {basvuruNo}</p>
-      <p>Ad: {basvuru && basvuru.ad}</p>
-      <p>Soyad: {basvuru && basvuru.soyad}</p>
-      <p>TC: {basvuru && basvuru.tc}</p>
-      <p>Yaş: {basvuru && basvuru.yas}</p>
-      <p>Adres: {basvuru && basvuru.adres}</p>
+      <p>Başvuru ID: {applicationId}</p>
+      <p>Ad: {application && application.ad}</p>
+      <p>Soyad: {application && application.soyad}</p>
+      <p>TC: {application && application.tc}</p>
+      <p>Yaş: {application && application.yas}</p>
+      <p>Adres: {application && application.adres}</p>
 
       <select
         className="durum-select"
-        value={durum}
-        onChange={(e) => setDurum(e.target.value)}
+        value={status}
+        onChange={(e) => setStatus(e.target.value)}
       >
         <option value="bekliyor">Bekliyor</option>
         <option value="çözüldü">Çözüldü</option>
@@ -58,8 +57,8 @@ const BasvuruDetay = () => {
         rows="4"
         cols="50"
         placeholder="Cevap yaz..."
-        value={cevap}
-        onChange={(e) => setCevap(e.target.value)}
+        value={answer}
+        onChange={(e) => setAnswer(e.target.value)}
       ></textarea>
       <button className="cevap-gonder-button" onClick={handleSendAnswer}>
         Cevap Gönder

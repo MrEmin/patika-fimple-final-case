@@ -1,7 +1,7 @@
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { kaydetVeGoster } from "../services/firebase";
+import { saveAndDisplay } from "../services/firebase";
 import { useNavigate } from "react-router-dom";
 import "../App.css";
 
@@ -36,11 +36,11 @@ function BasvuruOlustur() {
 
   const onSubmit = async (data) => {
     try {
-      const yeniKod = await kaydetVeGoster(data);
-      console.log("Başvuru başarıyla kaydedildi. Başvuru Kodu:", yeniKod);
+      const newKey = await saveAndDisplay(data);
+      console.log("Başvuru başarıyla kaydedildi. Başvuru Kodu:", newKey);
       // Formun sıfırlanması ve /basvuru-basarili sayfasına yönlendirme
       reset(); // Form sıfırlama
-      navigate("/basvuru-basarili", { state: { basvuruKodu: yeniKod } }); // Başvuru kodunu ileterek yönlendirme
+      navigate("/basvuru-basarili", { state: { applicationCode: newKey } }); // Başvuru kodunu ileterek yönlendirme
     } catch (error) {
       console.error("Başvuru kaydedilirken bir hata oluştu:", error);
     }
